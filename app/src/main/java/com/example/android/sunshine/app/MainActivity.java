@@ -9,6 +9,7 @@ import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
+import android.widget.ListView;
 
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -71,7 +72,8 @@ public class MainActivity extends ActionBarActivity {
 
             ArrayList<String> forecastEntries = new ArrayList<String>(Arrays.asList(foreCasts));
             ArrayAdapter<String> foreCastEntriesAdapter = new ArrayAdapter<String>(getActivity(), R.layout.list_item_forecast, R.id.list_item_forecast_textview, forecastEntries);
-
+            ListView listOfForecasts = (ListView) rootView.findViewById(R.id.listview_forecast);
+            listOfForecasts.setAdapter(foreCastEntriesAdapter);
             return rootView;
         }
     }
