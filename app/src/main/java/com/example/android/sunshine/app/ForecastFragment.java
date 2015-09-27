@@ -29,28 +29,15 @@ import java.util.Arrays;
  */
 @TargetApi(Build.VERSION_CODES.HONEYCOMB)
 public class ForecastFragment extends Fragment {
+
     public ForecastFragment() {
     }
 
     @Override
-    public View onCreateView(LayoutInflater inflater, ViewGroup container,
-                             Bundle savedInstanceState) {
-
-        View rootView = inflater.inflate(R.layout.fragment_main, container, false);
+    public void onCreate(Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+        // Add this line in order for this fragment to handle menu events.
         setHasOptionsMenu(true);
-
-        String[] foreCasts = {"Today - Sunny - 88/63",
-                "Tomorrow - Foggy - 70/46",
-                "Wed - Cloudy - 72/63",
-                "Thurs - Rainy - 64/51",
-                "Fri - Foggy - 70/46",
-                "Sat - Sunny - 76/68"};
-
-        ArrayList<String> forecastEntries = new ArrayList<String>(Arrays.asList(foreCasts));
-        ArrayAdapter<String> foreCastEntriesAdapter = new ArrayAdapter<String>(getActivity(), R.layout.list_item_forecast, R.id.list_item_forecast_textview, forecastEntries);
-        ListView listOfForecasts = (ListView) rootView.findViewById(R.id.listview_forecast);
-        listOfForecasts.setAdapter(foreCastEntriesAdapter);
-        return rootView;
     }
 
     @Override
@@ -68,10 +55,32 @@ public class ForecastFragment extends Fragment {
 
         //noinspection SimplifiableIfStatement
         if (id == R.id.action_refresh) {
+            FetchWeatherTask fetchWeatherTask = new FetchWeatherTask();
+            fetchWeatherTask.execute();
             return true;
         }
 
         return super.onOptionsItemSelected(item);
+    }
+
+    @Override
+    public View onCreateView(LayoutInflater inflater, ViewGroup container,
+                             Bundle savedInstanceState) {
+
+        View rootView = inflater.inflate(R.layout.fragment_main, container, false);
+
+        String[] foreCasts = {"Today - Sunny - 88/63",
+                "Tomorrow - Foggy - 70/46",
+                "Wed - Cloudy - 72/63",
+                "Thurs - Rainy - 64/51",
+                "Fri - Foggy - 70/46",
+                "Sat - Sunny - 76/68"};
+
+        ArrayList<String> forecastEntries = new ArrayList<String>(Arrays.asList(foreCasts));
+        ArrayAdapter<String> foreCastEntriesAdapter = new ArrayAdapter<String>(getActivity(), R.layout.list_item_forecast, R.id.list_item_forecast_textview, forecastEntries);
+        ListView listOfForecasts = (ListView) rootView.findViewById(R.id.listview_forecast);
+        listOfForecasts.setAdapter(foreCastEntriesAdapter);
+        return rootView;
     }
 
     public class FetchWeatherTask extends AsyncTask{
