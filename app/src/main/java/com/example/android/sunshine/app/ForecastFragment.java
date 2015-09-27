@@ -93,6 +93,7 @@ public class ForecastFragment extends Fragment {
     public class FetchWeatherTask extends AsyncTask<String, Void, String[]>{
 
         public final String LOG_TAG = FetchWeatherTask.class.getSimpleName();
+        public final int numForecastDays = 7;
 
         @Override
         protected String[] doInBackground(String... params) {
@@ -120,7 +121,7 @@ public class ForecastFragment extends Fragment {
                         .appendQueryParameter(QUERY_PARAM, params[0])
                         .appendQueryParameter(FORMAT_PARAM, "json")
                         .appendQueryParameter(UNITS_PARAM, "metric")
-                        .appendQueryParameter(DAYS_PARAM, Integer.toString(7))
+                        .appendQueryParameter(DAYS_PARAM, Integer.toString(numForecastDays))
                         .build();
 
                 URL url = new URL(builtUri.toString());
@@ -172,7 +173,7 @@ public class ForecastFragment extends Fragment {
                 }
             }
             try {
-                return getWeatherDataFromJson(forecastJsonStr, 7);
+                return getWeatherDataFromJson(forecastJsonStr, numForecastDays);
             } catch (JSONException e) {
                 e.printStackTrace();
             }
