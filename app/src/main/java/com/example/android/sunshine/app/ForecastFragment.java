@@ -34,7 +34,6 @@ import java.net.HttpURLConnection;
 import java.net.URL;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
-import java.util.Arrays;
 
 /**
  * Created by Rachel on 9/26/2015.
@@ -69,11 +68,7 @@ public class ForecastFragment extends Fragment {
 
         //noinspection SimplifiableIfStatement
         if (id == R.id.action_refresh) {
-            SharedPreferences settings = PreferenceManager.getDefaultSharedPreferences(getActivity());
-            String city = settings.getString(getString(R.string.preference_location_key), getString(R.string.preference_location_default));
-
-            FetchWeatherTask fetchWeatherTask = new FetchWeatherTask();
-            fetchWeatherTask.execute(city);
+            updateWeather();
             return true;
         }
 
@@ -86,25 +81,33 @@ public class ForecastFragment extends Fragment {
 
         View rootView = inflater.inflate(R.layout.fragment_main, container, false);
 
-        String[] foreCasts = {"Today - Sunny - 88/63",
-                "Tomorrow - Foggy - 70/46",
-                "Wed - Cloudy - 72/63",
-                "Thurs - Rainy - 64/51",
-                "Fri - Foggy - 70/46",
-                "Sat - Sunny - 76/68"};
+        foreCastEntriesAdapter = new ArrayAdapter<String>(getActivity(), R.layout.list_item_forecast, R.id.list_item_forecast_textview, new ArrayList<String>());
 
-        ArrayList<String> forecastEntries = new ArrayList<String>(Arrays.asList(foreCasts));
-        foreCastEntriesAdapter = new ArrayAdapter<String>(getActivity(), R.layout.list_item_forecast, R.id.list_item_forecast_textview, forecastEntries);
         ListView listOfForecasts = (ListView) rootView.findViewById(R.id.listview_forecast);
         listOfForecasts.setAdapter(foreCastEntriesAdapter);
         listOfForecasts.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-                Intent detailIntent = new Intent(getActivity(), DetailActivity.class).putExtra(Intent.EXTRA_TEXT, ((TextView)view).getText());
+                Intent detailIntent = new Intent(getActivity(), DetailActivity.class).putExtra(Intent.EXTRA_TEXT, ((TextView) view).getText());
                 startActivity(detailIntent);
             }
         });
+
         return rootView;
+    }
+
+    @Override
+    public void onStart() {
+        super.onStart();
+        updateWeather();
+    }
+
+    private void updateWeather(){
+        SharedPreferences settings = PreferenceManager.getDefaultSharedPreferences(getActivity());
+        String city = settings.getString(getString(R.string.preference_location_key), getString(R.string.preference_location_default));
+
+        FetchWeatherTask fetchWeatherTask = new FetchWeatherTask();
+        fetchWeatherTask.execute(city);
     }
 
     public class FetchWeatherTask extends AsyncTask<String, Void, String[]>{
