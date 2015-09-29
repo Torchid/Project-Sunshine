@@ -2,10 +2,12 @@ package com.example.android.sunshine.app;
 
 import android.annotation.TargetApi;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.net.Uri;
 import android.os.AsyncTask;
 import android.os.Build;
 import android.os.Bundle;
+import android.preference.PreferenceManager;
 import android.support.v4.app.Fragment;
 import android.text.format.Time;
 import android.util.Log;
@@ -67,8 +69,11 @@ public class ForecastFragment extends Fragment {
 
         //noinspection SimplifiableIfStatement
         if (id == R.id.action_refresh) {
+            SharedPreferences settings = PreferenceManager.getDefaultSharedPreferences(getActivity());
+            String city = settings.getString(getString(R.string.preference_location_key), getString(R.string.preference_location_default));
+
             FetchWeatherTask fetchWeatherTask = new FetchWeatherTask();
-            fetchWeatherTask.execute("Regina");
+            fetchWeatherTask.execute(city);
             return true;
         }
 
@@ -121,6 +126,7 @@ public class ForecastFragment extends Fragment {
                 // Construct the URL for the OpenWeatherMap query
                 // Possible parameters are available at OWM's forecast API page, at
                 // http://openweathermap.org/API#forecast
+                //TEST STRING: http://api.openweathermap.org/data/2.5/forecast/daily?q=Regina&mode=json&units=metric&cnt=7
                 final String FORECAST_BASE_URL =
                         "http://api.openweathermap.org/data/2.5/forecast/daily?";
                 final String QUERY_PARAM = "q";
