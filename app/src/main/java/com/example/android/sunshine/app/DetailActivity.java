@@ -16,10 +16,15 @@
 
 package com.example.android.sunshine.app;
 
+import android.annotation.TargetApi;
 import android.content.Intent;
+import android.os.Build;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
+import android.support.v4.app.ShareCompat;
+import android.support.v4.view.MenuItemCompat;
 import android.support.v7.app.ActionBarActivity;
+import android.support.v7.widget.ShareActionProvider;
 import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuItem;
@@ -28,6 +33,8 @@ import android.view.ViewGroup;
 import android.widget.TextView;
 
 public class DetailActivity extends ActionBarActivity {
+
+    private ShareActionProvider mShareActionProvider;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -41,11 +48,20 @@ public class DetailActivity extends ActionBarActivity {
     }
 
 
+    @TargetApi(Build.VERSION_CODES.ICE_CREAM_SANDWICH)
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         // Inflate the menu; this adds items to the action bar if it is present.
         getMenuInflater().inflate(R.menu.detail, menu);
-        return true;
+
+        // Locate MenuItem with ShareActionProvider
+        MenuItem item = menu.findItem(R.id.action_share);
+
+        // Fetch and store ShareActionProvider
+        mShareActionProvider = new ShareActionProvider(this);
+        MenuItemCompat.setActionProvider(item, mShareActionProvider);
+        setShareIntent();
+        return super.onCreateOptionsMenu(menu);
     }
 
     @Override
@@ -63,6 +79,19 @@ public class DetailActivity extends ActionBarActivity {
         }
 
         return super.onOptionsItemSelected(item);
+    }
+
+    //Helper function to update the intent of the Shared Action provider.  This is neeeded
+    //so that the intent can be updated whenever the user changes settings
+    private void setShareIntent(){
+        String forecast = getIntent().getStringExtra(Intent.EXTRA_TEXT);
+        // Create the share Intent
+        String shareText = forecast + "#SunshineApp";
+        Intent shareIntent = ShareCompat.IntentBuilder.from(this).setType("text/plain").setText(shareText).getIntent();
+        // Set the share Intent
+        if (mShareActionProvider != null) {
+            mShareActionProvider.setShareIntent(shareIntent);
+        }
     }
 
     /**
