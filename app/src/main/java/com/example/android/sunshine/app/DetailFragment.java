@@ -3,7 +3,6 @@ package com.example.android.sunshine.app;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
-import android.support.v4.app.ShareCompat;
 import android.support.v4.view.MenuItemCompat;
 import android.support.v7.widget.ShareActionProvider;
 import android.util.Log;
@@ -68,7 +67,13 @@ public class DetailFragment extends Fragment {
     private void setShareIntent(){
         // Create the share Intent
         String shareText = foreCastFromMain + FORECAST_SHARE_HASTAG;
-        Intent shareIntent = ShareCompat.IntentBuilder.from(getActivity()).setType("text/plain").setText(shareText).getIntent();
+//        Intent shareIntent = ShareCompat.IntentBuilder.from(getActivity()).setType("text/plain").
+//                setText(shareText).getIntent().addFlags(Intent.FLAG_ACTIVITY_CLEAR_WHEN_TASK_RESET);
+        Intent shareIntent = new Intent(Intent.ACTION_SEND);
+        shareIntent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_WHEN_TASK_RESET);
+        shareIntent.setType("text/plain");
+        shareIntent.putExtra(Intent.EXTRA_TEXT, shareText);
+        
         // Set the share Intent
         if (mShareActionProvider != null) {
             mShareActionProvider.setShareIntent(shareIntent);
