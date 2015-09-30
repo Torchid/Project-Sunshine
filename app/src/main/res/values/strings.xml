@@ -10,4 +10,16 @@
     <string name="preference_location_label">Location (City)</string>
     <string name="preference_location_key" translatable="false">location</string>
     <string name="preference_location_default" translatable="false">Regina</string>
+    <string name="preference_units_label">Temperature Units</string>
+    <string name="preference_units_dialog_label">Temperature Units</string>
+    <string name="preference_units_key">units</string>
+    <string name="preference_units_default">metric</string>
+    <string-array name="preference_units_values">
+        <item>metric</item>
+        <item>imperial</item>
+    </string-array>
+    <string-array name="preference_units_entries">
+        <item>Metric</item>
+        <item>Imperial</item>
+    </string-array>
 </resources>

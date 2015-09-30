@@ -3,6 +3,7 @@ package com.example.android.sunshine.app;
 import android.annotation.TargetApi;
 import android.content.Intent;
 import android.content.SharedPreferences;
+import android.content.res.Resources;
 import android.net.Uri;
 import android.os.AsyncTask;
 import android.os.Build;
@@ -223,11 +224,32 @@ public class ForecastFragment extends Fragment {
          * Prepare the weather high/lows for presentation.
          */
         private String formatHighLows(double high, double low) {
-            // For presentation, assume the user doesn't care about tenths of a degree.
-            long roundedHigh = Math.round(high);
-            long roundedLow = Math.round(low);
 
-            String highLowStr = roundedHigh + "/" + roundedLow;
+            long formattedHigh;
+            long formattedLow;
+
+            SharedPreferences settings = PreferenceManager.getDefaultSharedPreferences(getActivity());
+            String units = settings.getString(getString(R.string.preference_units_key), getString(R.string.preference_units_default));
+            Resources res = getResources();
+            String[] unitOptions = res.getStringArray(R.array.preference_units_values);
+
+            //Metric
+            if(units.equals(unitOptions[0]))
+            {
+                //Formula to convert Celsius into Fahrenheit
+                formattedHigh = Math.round(high);
+                formattedLow = Math.round(low);
+            }
+            //Imperial
+            else
+            {
+                //Formula to convert Celsius into Fahrenheit
+                formattedHigh = Math.round(high * 1.8000 + 32.00);
+                formattedLow = Math.round(low * 1.8000 + 32.00);
+            }
+
+
+            String highLowStr = formattedHigh + "/" + formattedLow;
             return highLowStr;
         }
 
