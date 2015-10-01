@@ -73,7 +73,7 @@ public class DetailFragment extends Fragment {
         shareIntent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_WHEN_TASK_RESET);
         shareIntent.setType("text/plain");
         shareIntent.putExtra(Intent.EXTRA_TEXT, shareText);
-        
+
         // Set the share Intent
         if (mShareActionProvider != null) {
             mShareActionProvider.setShareIntent(shareIntent);
