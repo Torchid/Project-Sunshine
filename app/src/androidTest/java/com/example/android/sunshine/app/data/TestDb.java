@@ -121,6 +121,7 @@ public class TestDb extends AndroidTestCase {
         ContentValues contentValues = TestUtilities.createNorthPoleLocationValues();
         // Insert ContentValues into database and get a row ID back
         long rowId = TestUtilities.insertNorthPoleLocationValues(mContext);
+        assertTrue("Error: North Pole location was not inserted.", rowId != -1);
         // Query the database and receive a Cursor back
         Cursor c = db.query(WeatherContract.LocationEntry.TABLE_NAME, null, null, null, null, null, null);
         // Move the cursor to a valid database row
