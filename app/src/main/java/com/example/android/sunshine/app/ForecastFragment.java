@@ -3,7 +3,6 @@ package com.example.android.sunshine.app;
 import android.annotation.TargetApi;
 import android.content.Intent;
 import android.content.SharedPreferences;
-import android.content.res.Resources;
 import android.net.Uri;
 import android.os.AsyncTask;
 import android.os.Build;
@@ -230,12 +229,10 @@ public class ForecastFragment extends Fragment {
             long formattedLow;
 
             SharedPreferences settings = PreferenceManager.getDefaultSharedPreferences(getActivity());
-            String units = settings.getString(getString(R.string.preference_units_key), getString(R.string.preference_units_default));
-            Resources res = getResources();
-            String[] unitOptions = res.getStringArray(R.array.preference_units_values);
+            String units = settings.getString(getString(R.string.preference_units_key), getString(R.string.preference_units_metric));
 
             //Metric
-            if(units.equals(unitOptions[0]))
+            if(units.equals(getString(R.string.preference_units_metric)))
             {
                 //Formula to convert Celsius into Fahrenheit
                 formattedHigh = Math.round(high);

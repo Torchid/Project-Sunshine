@@ -17,7 +17,8 @@
     <string name="preference_units_label">Temperature Units</string>
     <string name="preference_units_dialog_label">Temperature Units</string>
     <string name="preference_units_key">units</string>
-    <string name="preference_units_default">metric</string>
+    <string name="preference_units_metric">metric</string>
+    <string name="preference_units_imperial">imperial</string>
     <string-array name="preference_units_values">
         <item>metric</item>
         <item>imperial</item>
