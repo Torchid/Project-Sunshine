@@ -1,5 +1,6 @@
 .gradle
 .DS_Store
+passwords.xml
 
 # built application files
 *.apk
