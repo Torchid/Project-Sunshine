@@ -15,9 +15,11 @@
  */
 package com.example.android.sunshine.app;
 
+import android.content.ContentUris;
 import android.content.ContentValues;
 import android.content.Context;
 import android.content.SharedPreferences;
+import android.database.Cursor;
 import android.net.Uri;
 import android.os.AsyncTask;
 import android.preference.PreferenceManager;
@@ -25,6 +27,7 @@ import android.text.format.Time;
 import android.util.Log;
 import android.widget.ArrayAdapter;
 
+import com.example.android.sunshine.app.data.WeatherContract;
 import com.example.android.sunshine.app.data.WeatherContract.WeatherEntry;
 
 import org.json.JSONArray;
@@ -106,10 +109,31 @@ public class FetchWeatherTask extends AsyncTask<String, Void, String[]> {
      * @return the row ID of the added location.
      */
     long addLocation(String locationSetting, String cityName, double lat, double lon) {
-        // Students: First, check if the location with this city name exists in the db
-        // If it exists, return the current ID
-        // Otherwise, insert it using the content resolver and the base URI
-        return -1;
+        String selectionArgs[] = {locationSetting};
+        String projection[] = {WeatherContract.LocationEntry._ID};
+        long locationId;
+
+        Cursor c = mContext.getContentResolver().query(WeatherContract.LocationEntry.CONTENT_URI,
+                                                        projection,
+                                                        WeatherContract.LocationEntry.COLUMN_LOCATION_SETTING + " = ?",
+                                                        selectionArgs,
+                                                        null);
+
+        if(!c.moveToFirst()){
+            ContentValues contentValues = new ContentValues();
+            contentValues.put(WeatherContract.LocationEntry.COLUMN_LOCATION_SETTING, locationSetting);
+            contentValues.put(WeatherContract.LocationEntry.COLUMN_CITY_NAME, cityName);
+            contentValues.put(WeatherContract.LocationEntry.COLUMN_COORD_LAT, lat);
+            contentValues.put(WeatherContract.LocationEntry.COLUMN_COORD_LONG, lon);
+
+            Uri insertUri = mContext.getContentResolver().insert(WeatherContract.LocationEntry.CONTENT_URI, contentValues);
+            locationId = ContentUris.parseId(insertUri);
+        }
+        else{
+            locationId =  c.getLong(c.getColumnIndex(WeatherContract.LocationEntry._ID));
+        }
+
+        return locationId;
     }
 
     /*
