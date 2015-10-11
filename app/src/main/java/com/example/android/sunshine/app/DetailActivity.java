@@ -30,6 +30,8 @@ public class DetailActivity extends ActionBarActivity {
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
+        String forecastMsg = "";
+
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_detail);
         if (savedInstanceState == null) {
@@ -38,8 +40,12 @@ public class DetailActivity extends ActionBarActivity {
                     .add(R.id.container, detailFragment)
                     .commit();
 
+            if (getIntent() != null) {
+                forecastMsg = getIntent().getDataString();
+            }
+
             Bundle bundle = new Bundle();
-            bundle.putString(FORECAST_KEY, getIntent().getStringExtra(Intent.EXTRA_TEXT));
+            bundle.putString(FORECAST_KEY, forecastMsg);
             detailFragment.setArguments(bundle);
         }
     }
