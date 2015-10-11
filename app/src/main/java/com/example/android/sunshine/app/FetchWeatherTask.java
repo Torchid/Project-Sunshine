@@ -49,8 +49,6 @@ public class FetchWeatherTask extends AsyncTask<String, Void, Void> {
         mContext = context;
     }
 
-    private boolean DEBUG = true;
-
     /**
      * Helper method to handle insertion of a new location in the weather database.
      *
@@ -61,14 +59,12 @@ public class FetchWeatherTask extends AsyncTask<String, Void, Void> {
      * @return the row ID of the added location.
      */
     long addLocation(String locationSetting, String cityName, double lat, double lon) {
-        String selectionArgs[] = {locationSetting};
-        String projection[] = {WeatherContract.LocationEntry._ID};
         long locationId;
 
         Cursor c = mContext.getContentResolver().query(WeatherContract.LocationEntry.CONTENT_URI,
-                                                        projection,
+                                                        new String[]{WeatherContract.LocationEntry._ID},
                                                         WeatherContract.LocationEntry.COLUMN_LOCATION_SETTING + " = ?",
-                                                        selectionArgs,
+                                                        new String[]{locationSetting},
                                                         null);
 
         if(!c.moveToFirst()){
@@ -97,15 +93,8 @@ public class FetchWeatherTask extends AsyncTask<String, Void, Void> {
      * Fortunately parsing is easy:  constructor takes the JSON string and converts it
      * into an Object hierarchy for us.
      */
-    private Void getWeatherDataFromJson(String forecastJsonStr,
-                                            String locationSetting)
+    private Void getWeatherDataFromJson(String forecastJsonStr, String locationSetting)
             throws JSONException {
-
-        // Now we have a String representing the complete forecast in JSON Format.
-        // Fortunately parsing is easy:  constructor takes the JSON string and converts it
-        // into an Object hierarchy for us.
-
-        // These are the names of the JSON objects that need to be extracted.
 
         // Location information
         final String OWM_CITY = "city";
@@ -224,7 +213,7 @@ public class FetchWeatherTask extends AsyncTask<String, Void, Void> {
             // add to database
             if ( cVVector.size() > 0 ) {
                 // Student: call bulkInsert to add the weatherEntries to the database here
-                inserted =mContext.getContentResolver().bulkInsert(WeatherEntry.CONTENT_URI, cVVector.toArray(new ContentValues[cVVector.size()]));
+                inserted = mContext.getContentResolver().bulkInsert(WeatherEntry.CONTENT_URI, cVVector.toArray(new ContentValues[cVVector.size()]));
             }
 
             Log.d(LOG_TAG, "FetchWeatherTask Complete. " + inserted + " Inserted");
@@ -243,6 +232,7 @@ public class FetchWeatherTask extends AsyncTask<String, Void, Void> {
         if (params.length == 0) {
             return null;
         }
+
         String locationQuery = params[0];
 
         // These two need to be declared outside the try/catch
@@ -287,6 +277,7 @@ public class FetchWeatherTask extends AsyncTask<String, Void, Void> {
             // Read the input stream into a String
             InputStream inputStream = urlConnection.getInputStream();
             StringBuffer buffer = new StringBuffer();
+
             if (inputStream == null) {
                 // Nothing to do.
                 return null;
@@ -305,12 +296,17 @@ public class FetchWeatherTask extends AsyncTask<String, Void, Void> {
                 // Stream was empty.  No point in parsing.
                 return null;
             }
+
             forecastJsonStr = buffer.toString();
+            getWeatherDataFromJson(forecastJsonStr, locationQuery);
+
         } catch (IOException e) {
             Log.e(LOG_TAG, "Error ", e);
             // If the code didn't successfully get the weather data, there's no point in attemping
             // to parse it.
             return null;
+        } catch (JSONException e) {
+            e.printStackTrace();
         } finally {
             if (urlConnection != null) {
                 urlConnection.disconnect();

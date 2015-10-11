@@ -64,12 +64,12 @@ public class ForecastFragment extends Fragment implements LoaderManager.LoaderCa
         Bundle savedInstanceState){
 
         View rootView = inflater.inflate(R.layout.fragment_main, container, false);
-
         foreCastEntriesAdapter = new ForecastAdapter(getActivity(),null, 0);
 
         ListView listOfForecasts = (ListView) rootView.findViewById(R.id.listview_forecast);
         listOfForecasts.setAdapter(foreCastEntriesAdapter);
         getLoaderManager().initLoader(LOADER_ID, null, this);
+
         return rootView;
     }
 
@@ -96,9 +96,9 @@ public class ForecastFragment extends Fragment implements LoaderManager.LoaderCa
 
         return new CursorLoader(getActivity(),
                                 weatherForLocationUri,
+                                WeatherContract.FORECAST_COLUMNS,
                                 null,
-                                WeatherContract.LocationEntry.COLUMN_LOCATION_SETTING + "= ?",
-                                new String[]{locationSetting},
+                                null,
                                 sortOrder);
     }
 
