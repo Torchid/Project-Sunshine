@@ -26,7 +26,7 @@ import android.view.MenuItem;
 
 public class DetailActivity extends ActionBarActivity {
 
-    private final String FORECAST_KEY = "intentKeyForecast";
+    private final String URI_KEY = "intentKeyForecast";
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -45,7 +45,7 @@ public class DetailActivity extends ActionBarActivity {
             }
 
             Bundle bundle = new Bundle();
-            bundle.putString(FORECAST_KEY, forecastMsg);
+            bundle.putString(URI_KEY, forecastMsg);
             detailFragment.setArguments(bundle);
         }
     }
