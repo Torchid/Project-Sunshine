@@ -81,7 +81,7 @@ public class DetailFragment extends Fragment implements LoaderManager.LoaderCall
     //so that the intent can be updated whenever the user changes settings
     private void setShareIntent(){
         // Create the share Intent
-        String shareText = uriFromMain + FORECAST_SHARE_HASTAG;
+        String shareText = weatherDetails + FORECAST_SHARE_HASTAG;
 //        Intent shareIntent = ShareCompat.IntentBuilder.from(getActivity()).setType("text/plain").
 //                setText(shareText).getIntent().addFlags(Intent.FLAG_ACTIVITY_CLEAR_WHEN_TASK_RESET);
         Intent shareIntent = new Intent(Intent.ACTION_SEND);
