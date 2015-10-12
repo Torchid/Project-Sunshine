@@ -36,6 +36,14 @@ public class DetailFragment extends Fragment implements LoaderManager.LoaderCall
     final int LOADER_ID = 1;
     private View rootView;
 
+    private TextView highView;
+    private TextView lowView;
+    private ImageView iconView;
+    private TextView descriptionView;
+    private TextView humidityView;
+    private TextView windView;
+    private TextView pressureView;
+
     public DetailFragment() {
     }
 
@@ -66,6 +74,14 @@ public class DetailFragment extends Fragment implements LoaderManager.LoaderCall
                              Bundle savedInstanceState) {
 
         rootView = inflater.inflate(R.layout.fragment_detail, container, false);
+
+        highView = (TextView) rootView.findViewById(R.id.detail_high);
+        lowView = (TextView) rootView.findViewById(R.id.detail_low);
+        iconView = (ImageView) rootView.findViewById(R.id.detail_icon);
+        descriptionView = (TextView) rootView.findViewById(R.id.detail_description);
+        humidityView = (TextView) rootView.findViewById(R.id.detail_humidity);
+        windView = (TextView) rootView.findViewById(R.id.detail_wind);
+        pressureView = (TextView) rootView.findViewById(R.id.detail_pressure);
 
         getLoaderManager().initLoader(LOADER_ID, null, this);
         return rootView;
@@ -127,25 +143,18 @@ public class DetailFragment extends Fragment implements LoaderManager.LoaderCall
         // Read user preference for metric or imperial temperature units
         boolean isMetric = Utility.isMetric(getActivity());
 
-        TextView highView = (TextView) rootView.findViewById(R.id.detail_high);
         highView.setText(Utility.formatTemperature(getActivity(), data.getLong(WeatherContract.COL_WEATHER_MAX_TEMP), isMetric));
 
-        TextView lowView = (TextView) rootView.findViewById(R.id.detail_low);
         lowView.setText(Utility.formatTemperature(getActivity(), data.getLong(WeatherContract.COL_WEATHER_MIN_TEMP), isMetric));
 
-        ImageView iconView = (ImageView) rootView.findViewById(R.id.detail_icon);
         iconView.setImageResource(R.drawable.ic_launcher);
 
-        TextView descriptionView = (TextView) rootView.findViewById(R.id.detail_description);
         descriptionView.setText(data.getString(WeatherContract.COL_WEATHER_DESC));
 
-        TextView humidityView = (TextView) rootView.findViewById(R.id.detail_humidity);
         humidityView.setText(getActivity().getString(R.string.format_humidity, data.getFloat(WeatherContract.COL_WEATHER_HUMIDITY)));
 
-        TextView windView = (TextView) rootView.findViewById(R.id.detail_wind);
         windView.setText(Utility.getFormattedWind(getActivity(), data.getFloat(WeatherContract.COL_WEATHER_WIND), data.getFloat(WeatherContract.COL_WEATHER_DEGREES)));
 
-        TextView pressureView = (TextView) rootView.findViewById(R.id.detail_pressure);
         pressureView.setText(getActivity().getString(R.string.format_pressure, data.getFloat(WeatherContract.COL_WEATHER_PRESSURE)));
     }
 
