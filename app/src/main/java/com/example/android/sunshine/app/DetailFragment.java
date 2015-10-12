@@ -17,6 +17,7 @@ import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.example.android.sunshine.app.data.WeatherContract;
@@ -66,15 +67,8 @@ public class DetailFragment extends Fragment implements LoaderManager.LoaderCall
 
         rootView = inflater.inflate(R.layout.fragment_detail, container, false);
 
-        updateDetails();
-
         getLoaderManager().initLoader(LOADER_ID, null, this);
         return rootView;
-    }
-
-    public void updateDetails() {
-        TextView detailText = (TextView) rootView.findViewById(R.id.detail_text);
-        detailText.setText(weatherDetails);
     }
 
     //Helper function to update the intent of the Shared Action provider.  This is neeeded
@@ -123,7 +117,36 @@ public class DetailFragment extends Fragment implements LoaderManager.LoaderCall
                             data.getString(WeatherContract.COL_WEATHER_DESC) + "-" +
                             data.getLong(WeatherContract.COL_WEATHER_MAX_TEMP) + "/" +
                             data.getLong(WeatherContract.COL_WEATHER_MIN_TEMP);
-        updateDetails();
+
+        TextView dayView = (TextView) rootView.findViewById(R.id.detail_day);
+        dayView.setText(Utility.getFriendlyDayString(getActivity(), data.getLong(WeatherContract.COL_WEATHER_DATE)));
+
+        TextView dateView = (TextView) rootView.findViewById(R.id.detail_date);
+        dateView.setText(Utility.formatDate(data.getLong(WeatherContract.COL_WEATHER_DATE)));
+
+        // Read user preference for metric or imperial temperature units
+        boolean isMetric = Utility.isMetric(getActivity());
+
+        TextView highView = (TextView) rootView.findViewById(R.id.detail_high);
+        highView.setText(Utility.formatTemperature(getActivity(), data.getLong(WeatherContract.COL_WEATHER_MAX_TEMP), isMetric));
+
+        TextView lowView = (TextView) rootView.findViewById(R.id.detail_low);
+        lowView.setText(Utility.formatTemperature(getActivity(), data.getLong(WeatherContract.COL_WEATHER_MIN_TEMP), isMetric));
+
+        ImageView iconView = (ImageView) rootView.findViewById(R.id.detail_icon);
+        iconView.setImageResource(R.drawable.ic_launcher);
+
+        TextView descriptionView = (TextView) rootView.findViewById(R.id.detail_description);
+        descriptionView.setText(data.getString(WeatherContract.COL_WEATHER_DESC));
+
+        TextView humidityView = (TextView) rootView.findViewById(R.id.detail_humidity);
+        humidityView.setText("77");
+
+        TextView windView = (TextView) rootView.findViewById(R.id.detail_wind);
+        windView.setText("77");
+
+        TextView pressureView = (TextView) rootView.findViewById(R.id.detail_pressure);
+        pressureView.setText("77");
     }
 
     @Override
