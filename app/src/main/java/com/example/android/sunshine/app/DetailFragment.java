@@ -140,13 +140,13 @@ public class DetailFragment extends Fragment implements LoaderManager.LoaderCall
         descriptionView.setText(data.getString(WeatherContract.COL_WEATHER_DESC));
 
         TextView humidityView = (TextView) rootView.findViewById(R.id.detail_humidity);
-        humidityView.setText("77");
+        humidityView.setText(getActivity().getString(R.string.format_humidity, data.getFloat(WeatherContract.COL_WEATHER_HUMIDITY)));
 
         TextView windView = (TextView) rootView.findViewById(R.id.detail_wind);
-        windView.setText("77");
+        windView.setText(Utility.getFormattedWind(getActivity(), data.getFloat(WeatherContract.COL_WEATHER_WIND), data.getFloat(WeatherContract.COL_WEATHER_DEGREES)));
 
         TextView pressureView = (TextView) rootView.findViewById(R.id.detail_pressure);
-        pressureView.setText("77");
+        pressureView.setText(getActivity().getString(R.string.format_pressure, data.getFloat(WeatherContract.COL_WEATHER_PRESSURE)));
     }
 
     @Override
