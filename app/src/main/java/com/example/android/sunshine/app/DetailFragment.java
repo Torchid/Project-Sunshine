@@ -147,7 +147,7 @@ public class DetailFragment extends Fragment implements LoaderManager.LoaderCall
 
         lowView.setText(Utility.formatTemperature(getActivity(), data.getLong(WeatherContract.COL_WEATHER_MIN_TEMP), isMetric));
 
-        iconView.setImageResource(R.drawable.ic_launcher);
+        iconView.setImageResource(Utility.getArtResourceForWeatherCondition(data.getInt(WeatherContract.COL_WEATHER_CONDITION_ID)));
 
         descriptionView.setText(data.getString(WeatherContract.COL_WEATHER_DESC));
 
