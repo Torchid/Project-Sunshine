@@ -125,23 +125,16 @@ public class DetailFragment extends Fragment implements LoaderManager.LoaderCall
     @Override
     public Loader<Cursor> onCreateLoader(int id, Bundle args) {
 
-        Intent intent = getActivity().getIntent();
-        if (intent == null || intent.getData() == null) {
+        if (uriFromMain == null) {
             return null;
         }
 
-        String locationSetting = Utility.getPreferredLocation(getActivity());
-        // Sort order:  Ascending, by date.
-        String sortOrder = WeatherContract.WeatherEntry.COLUMN_DATE + " ASC";
-
-        Uri weatherWithDate = uriFromMain;
-
         return new CursorLoader(getActivity(),
-                weatherWithDate,
+                uriFromMain,
                 WeatherContract.FORECAST_COLUMNS,
-                WeatherContract.LocationEntry.COLUMN_LOCATION_SETTING + " = ?",
-                new String[]{locationSetting},
-                sortOrder);
+                null,
+                null,
+                null);
     }
 
     @Override
