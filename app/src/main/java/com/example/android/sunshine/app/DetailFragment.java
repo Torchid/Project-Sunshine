@@ -28,13 +28,15 @@ import com.example.android.sunshine.app.data.WeatherContract;
 public class DetailFragment extends Fragment implements LoaderManager.LoaderCallbacks<Cursor> {
 
     private final String LOG_TAG = DetailFragment.class.getSimpleName();
-    private final String URI_KEY = "intentKeyForecast";
+    public static final String URI_KEY = "intentKeyForecast";
     private final String FORECAST_SHARE_HASTAG = "#SunshineApp";
     private ShareActionProvider mShareActionProvider;
-    private String uriFromMain;
+    private Uri uriFromMain;
     String weatherDetails = "";
     final int LOADER_ID = 1;
     private View rootView;
+
+    private static final int DETAIL_LOADER = 0;
 
     private TextView highView;
     private TextView lowView;
@@ -52,7 +54,8 @@ public class DetailFragment extends Fragment implements LoaderManager.LoaderCall
         setHasOptionsMenu(true);
 
         Bundle bundle = this.getArguments();
-        uriFromMain = bundle.getString(URI_KEY);
+        if(bundle != null)
+            uriFromMain = bundle.getParcelable(URI_KEY);
     }
 
     public void onCreateOptionsMenu(Menu menu, MenuInflater inflater) {
@@ -109,6 +112,16 @@ public class DetailFragment extends Fragment implements LoaderManager.LoaderCall
         }
     }
 
+    void onLocationChanged( String newLocation ) {
+        // replace the uri, since the location has changed
+        if (null != uriFromMain) {
+            long date = WeatherContract.WeatherEntry.getDateFromUri(uriFromMain);
+            Uri updatedUri = WeatherContract.WeatherEntry.buildWeatherLocationWithDate(newLocation, date);
+            uriFromMain = updatedUri;
+            getLoaderManager().restartLoader(DETAIL_LOADER, null, this);
+        }
+    }
+
     @Override
     public Loader<Cursor> onCreateLoader(int id, Bundle args) {
 
@@ -121,7 +134,7 @@ public class DetailFragment extends Fragment implements LoaderManager.LoaderCall
         // Sort order:  Ascending, by date.
         String sortOrder = WeatherContract.WeatherEntry.COLUMN_DATE + " ASC";
 
-        Uri weatherWithDate = Uri.parse(uriFromMain);
+        Uri weatherWithDate = uriFromMain;
 
         return new CursorLoader(getActivity(),
                 weatherWithDate,

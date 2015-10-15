@@ -45,7 +45,7 @@ public class DetailActivity extends ActionBarActivity {
             }
 
             Bundle bundle = new Bundle();
-            bundle.putString(URI_KEY, forecastMsg);
+            bundle.putParcelable(DetailFragment.URI_KEY, getIntent().getData());
             detailFragment.setArguments(bundle);
         }
     }
