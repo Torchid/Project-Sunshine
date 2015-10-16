@@ -26,7 +26,7 @@ import com.example.android.sunshine.app.data.WeatherContract;
 @TargetApi(Build.VERSION_CODES.HONEYCOMB)
 public class ForecastFragment extends Fragment implements LoaderManager.LoaderCallbacks<Cursor>  {
 
-    ForecastAdapter foreCastEntriesAdapter;
+    public ForecastAdapter foreCastEntriesAdapter;
     private final int  LOADER_ID = 0;
     private final String POSITION_KEY = "posKey";
     int listPosition = 0;
