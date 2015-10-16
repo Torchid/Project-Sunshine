@@ -28,6 +28,10 @@ public class ForecastFragment extends Fragment implements LoaderManager.LoaderCa
 
     ForecastAdapter foreCastEntriesAdapter;
     private final int  LOADER_ID = 0;
+    private final String POSITION_KEY = "posKey";
+    int listPosition = 0;
+    private ListView listOfForecasts;
+
     public ForecastFragment() {
     }
 
@@ -61,14 +65,17 @@ public class ForecastFragment extends Fragment implements LoaderManager.LoaderCa
     }
 
     @Override
-    public View onCreateView(LayoutInflater inflater, ViewGroup container,
-        Bundle savedInstanceState){
+    public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState){
 
         View rootView = inflater.inflate(R.layout.fragment_forecast, container, false);
-        foreCastEntriesAdapter = new ForecastAdapter(getActivity(),null, 0);
 
-        ListView listOfForecasts = (ListView) rootView.findViewById(R.id.listview_forecast);
+        foreCastEntriesAdapter = new ForecastAdapter(getActivity(),null, 0);
+        listOfForecasts = (ListView) rootView.findViewById(R.id.listview_forecast);
         listOfForecasts.setAdapter(foreCastEntriesAdapter);
+
+        if(savedInstanceState != null)
+            listPosition = savedInstanceState.getInt(POSITION_KEY);
+
         getLoaderManager().initLoader(LOADER_ID, null, this);
 
         listOfForecasts.setOnItemClickListener(new AdapterView.OnItemClickListener() {
@@ -78,6 +85,8 @@ public class ForecastFragment extends Fragment implements LoaderManager.LoaderCa
                 // CursorAdapter returns a cursor at the correct position for getItem(), or null
                 // if it cannot seek to that position.
                 Cursor cursor = (Cursor) adapterView.getItemAtPosition(position);
+                listPosition = position;
+
                 if (cursor != null) {
                     String locationSetting = Utility.getPreferredLocation(getActivity());
                     ((Callback) getActivity())
@@ -89,6 +98,13 @@ public class ForecastFragment extends Fragment implements LoaderManager.LoaderCa
         });
 
         return rootView;
+    }
+
+    @Override
+    public void onSaveInstanceState(Bundle outState) {
+        super.onSaveInstanceState(outState);
+        if(listPosition != ListView.INVALID_POSITION)
+            outState.putInt(POSITION_KEY, listPosition);
     }
 
     private void updateWeather(){
@@ -122,6 +138,9 @@ public class ForecastFragment extends Fragment implements LoaderManager.LoaderCa
     @Override
     public void onLoadFinished(Loader<Cursor> loader, Cursor data) {
         foreCastEntriesAdapter.swapCursor(data);
+
+        if (listPosition != ListView.INVALID_POSITION)
+            listOfForecasts.smoothScrollToPosition(listPosition);
     }
 
     @Override
