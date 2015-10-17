@@ -42,6 +42,7 @@ public class MainActivity extends ActionBarActivity implements  ForecastFragment
             forecastFragment.foreCastEntriesAdapter.setUseTodayLayout(false);
         } else {
             twoPane = false;
+            getSupportActionBar().setElevation(0);
         }
     }
 
