@@ -7,11 +7,11 @@
     </style>
 
     <style name="ForecastTheme" parent="AppTheme">
-        <item name="android:actionBarStyle" tools:targetApi="honeycomb">@style/ActionBar.Solid.Sunshine.NoTitle</item>
+        <item name="actionBarStyle" tools:targetApi="honeycomb">@style/ActionBar.Solid.Sunshine.NoTitle</item>
     </style>
 
     <style name="ActionBar.Solid.Sunshine.NoTitle" parent="@style/Widget.AppCompat.Light.ActionBar.Solid.Inverse">
-        <item name="android:displayOptions" tools:targetApi="honeycomb">useLogo|showHome</item>
+        <item name="displayOptions" tools:targetApi="honeycomb">useLogo|showHome</item>
         <item name="logo">@drawable/ic_logo</item>
     </style>
 

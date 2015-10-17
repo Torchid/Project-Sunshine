@@ -12,7 +12,7 @@
 
     <style name="ActionBar.Solid.Sunshine.NoTitle" parent="@style/Widget.AppCompat.Light.ActionBar.Solid.Inverse">
         <item name="android:displayOptions" tools:targetApi="honeycomb">useLogo|showHome</item>
-        <item name="logo">@drawable/ic_logo</item>
+        <item name="android:logo">@drawable/ic_logo</item>
     </style>
 
     <style name="AppTheme.ForecastListStyle" parent="Theme.AppCompat.Light.DarkActionBar">
