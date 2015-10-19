@@ -17,7 +17,6 @@
         android:label="@string/app_name"
         android:theme="@style/AppTheme" >
 
-        <service android:name=".service.SunshineService" />
         <!-- SyncAdapter's dummy authentication service -->
         <service
             android:name=".sync.SunshineAuthenticatorService"
@@ -41,7 +40,6 @@
                 android:name="android.content.SyncAdapter"
                 android:resource="@xml/syncadapter" />
         </service>
-        <receiver android:name=".service.SunshineService$AlarmReceiver" />
 
         <activity
             android:name=".MainActivity"

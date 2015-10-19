@@ -8,6 +8,8 @@ import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 
+import com.example.android.sunshine.app.sync.SunshineSyncAdapter;
+
 public class MainActivity extends ActionBarActivity implements  ForecastFragment.Callback{
 
     private final String LOG_TAG = MainActivity.class.getSimpleName();
@@ -22,6 +24,8 @@ public class MainActivity extends ActionBarActivity implements  ForecastFragment
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
         location = Utility.getPreferredLocation(this);
+
+        SunshineSyncAdapter.initializeSyncAdapter(this);
 
         if (findViewById(R.id.weather_detail_container) != null) {
             // The detail container view will be present only in the large-screen layouts
