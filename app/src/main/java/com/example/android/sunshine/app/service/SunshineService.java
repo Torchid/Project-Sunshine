@@ -32,7 +32,7 @@ import java.util.Vector;
 
 public class SunshineService extends IntentService{
 
-    private final String PREF_LOC_KEY = "prefLocKey";
+    public static final String PREF_LOC_KEY = "prefLocKey";
     private final String LOG_TAG = SunshineService.class.getSimpleName();
 
     public SunshineService() {
@@ -320,7 +320,9 @@ public class SunshineService extends IntentService{
 
         @Override
         public void onReceive(Context context, Intent intent) {
-            Log.v(LOG_TAG, "Alarm was fired.");
+            Intent sendIntent = new Intent(context, SunshineService.class);
+            sendIntent.putExtra(SunshineService.PREF_LOC_KEY, intent.getStringExtra(SunshineService.PREF_LOC_KEY));
+            context.startService(sendIntent);
         }
     }
 }
