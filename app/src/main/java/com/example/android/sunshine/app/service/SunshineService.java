@@ -1,8 +1,10 @@
 package com.example.android.sunshine.app.service;
 
 import android.app.IntentService;
+import android.content.BroadcastReceiver;
 import android.content.ContentUris;
 import android.content.ContentValues;
+import android.content.Context;
 import android.content.Intent;
 import android.database.Cursor;
 import android.net.Uri;
@@ -31,7 +33,7 @@ import java.util.Vector;
 public class SunshineService extends IntentService{
 
     private final String PREF_LOC_KEY = "prefLocKey";
-    private final String LOG_TAG = IntentService.class.getSimpleName();
+    private final String LOG_TAG = SunshineService.class.getSimpleName();
 
     public SunshineService() {
         super("Sunshine");
@@ -310,5 +312,15 @@ public class SunshineService extends IntentService{
             e.printStackTrace();
         }
         return null;
+    }
+
+    static public class AlarmReceiver extends BroadcastReceiver {
+
+        private final String LOG_TAG = AlarmReceiver.class.getSimpleName();
+
+        @Override
+        public void onReceive(Context context, Intent intent) {
+            Log.v(LOG_TAG, "Alarm was fired.");
+        }
     }
 }

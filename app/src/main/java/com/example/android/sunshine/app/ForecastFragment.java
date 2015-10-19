@@ -1,11 +1,15 @@
 package com.example.android.sunshine.app;
 
 import android.annotation.TargetApi;
+import android.app.AlarmManager;
+import android.app.PendingIntent;
+import android.content.Context;
 import android.content.Intent;
 import android.database.Cursor;
 import android.net.Uri;
 import android.os.Build;
 import android.os.Bundle;
+import android.os.SystemClock;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.LoaderManager;
 import android.support.v4.content.CursorLoader;
@@ -34,6 +38,8 @@ public class ForecastFragment extends Fragment implements LoaderManager.LoaderCa
     private final String PREF_LOC_KEY = "prefLocKey";
     int listPosition = 0;
     private ListView listOfForecasts;
+    private AlarmManager alarmManager;
+    private PendingIntent pendingIntent;
 
     public ForecastFragment() {
     }
@@ -100,6 +106,8 @@ public class ForecastFragment extends Fragment implements LoaderManager.LoaderCa
             }
         });
 
+        updateWeather();
+
         return rootView;
     }
 
@@ -114,6 +122,13 @@ public class ForecastFragment extends Fragment implements LoaderManager.LoaderCa
         Intent intent = new Intent(getActivity(), SunshineService.class);
         intent.putExtra(PREF_LOC_KEY, Utility.getPreferredLocation(getActivity()));
         getActivity().startService(intent);
+
+        alarmManager = (AlarmManager)getActivity().getSystemService(Context.ALARM_SERVICE);
+        Intent alarmIntent = new Intent(getActivity(), SunshineService.AlarmReceiver.class);
+        pendingIntent = PendingIntent.getBroadcast(getActivity(), 0, alarmIntent, 0);
+        alarmManager.set(AlarmManager.ELAPSED_REALTIME_WAKEUP,
+                SystemClock.elapsedRealtime() +
+                        5 * 1000, pendingIntent);
     }
 
     public void onLocationChanged(){
@@ -160,6 +175,6 @@ public class ForecastFragment extends Fragment implements LoaderManager.LoaderCa
         /**
          * DetailFragmentCallback for when an item has been selected.
          */
-        public void onItemSelected(Uri dateUri);
+        void onItemSelected(Uri dateUri);
     }
 }

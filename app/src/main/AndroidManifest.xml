@@ -11,6 +11,7 @@
         android:theme="@style/AppTheme" >
 
         <service android:name=".service.SunshineService" />
+        <receiver android:name=".service.SunshineService$AlarmReceiver" />
 
         <activity
             android:name=".MainActivity"
