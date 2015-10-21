@@ -28,6 +28,9 @@
         <item>Metric</item>
         <item>Imperial</item>
     </string-array>
+    <string name="preference_notifications_label">Notifications</string>
+    <string name="preference_notifications_key" translatable="false">notifications</string>
+    <string name="preference_notifications_default">true</string>
 
     <string name="intent_key_forecast">intentKeyForecast</string>
 
