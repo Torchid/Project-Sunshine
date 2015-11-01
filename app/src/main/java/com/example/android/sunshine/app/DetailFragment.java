@@ -29,7 +29,7 @@ public class DetailFragment extends Fragment implements LoaderManager.LoaderCall
 
     private final String LOG_TAG = DetailFragment.class.getSimpleName();
     public static final String URI_KEY = "intentKeyForecast";
-    private final String FORECAST_SHARE_HASTAG = "#SunshineApp";
+    private final String FORECAST_SHARE_HASHTAG = "#SunshineApp";
     private ShareActionProvider mShareActionProvider;
     private Uri uriFromMain;
     String weatherDetails = "";
@@ -69,7 +69,6 @@ public class DetailFragment extends Fragment implements LoaderManager.LoaderCall
         mShareActionProvider = new ShareActionProvider(getActivity());
         MenuItemCompat.setActionProvider(item, mShareActionProvider);
         setShareIntent();
-        //return super.onCreateOptionsMenu(menu);
     }
 
     @Override
@@ -94,9 +93,7 @@ public class DetailFragment extends Fragment implements LoaderManager.LoaderCall
     //so that the intent can be updated whenever the user changes settings
     private void setShareIntent(){
         // Create the share Intent
-        String shareText = weatherDetails + FORECAST_SHARE_HASTAG;
-//        Intent shareIntent = ShareCompat.IntentBuilder.from(getActivity()).setType("text/plain").
-//                setText(shareText).getIntent().addFlags(Intent.FLAG_ACTIVITY_CLEAR_WHEN_TASK_RESET);
+        String shareText = weatherDetails + FORECAST_SHARE_HASHTAG;
         Intent shareIntent = new Intent(Intent.ACTION_SEND);
         shareIntent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_WHEN_TASK_RESET);
         shareIntent.setType("text/plain");

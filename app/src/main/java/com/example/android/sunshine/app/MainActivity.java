@@ -12,11 +12,9 @@ import com.example.android.sunshine.app.sync.SunshineSyncAdapter;
 public class MainActivity extends ActionBarActivity implements  ForecastFragment.Callback{
 
     private final String LOG_TAG = MainActivity.class.getSimpleName();
-    private static final String DETAILFRAGMENT_TAG = "DFTAG";
+    private static final String DETAIL_FRAGMENT_TAG = "DFTAG";
     private String location;
     private boolean twoPane;
-
-    private final String URI_KEY = "intentKeyForecast";
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -37,7 +35,7 @@ public class MainActivity extends ActionBarActivity implements  ForecastFragment
             if (savedInstanceState == null) {
                 DetailFragment detailFragment = new DetailFragment();
                 getSupportFragmentManager().beginTransaction()
-                        .add(R.id.weather_detail_container, detailFragment, DETAILFRAGMENT_TAG)
+                        .add(R.id.weather_detail_container, detailFragment, DETAIL_FRAGMENT_TAG)
                         .commit();
             }
 
@@ -60,7 +58,7 @@ public class MainActivity extends ActionBarActivity implements  ForecastFragment
         if ( null != ff ) {
             ff.onLocationChanged();
         }
-        DetailFragment df = (DetailFragment)getSupportFragmentManager().findFragmentByTag(DETAILFRAGMENT_TAG);
+        DetailFragment df = (DetailFragment)getSupportFragmentManager().findFragmentByTag(DETAIL_FRAGMENT_TAG);
         if ( null != df ) {
             df.onLocationChanged(preferredLocation);
         }
@@ -89,7 +87,7 @@ public class MainActivity extends ActionBarActivity implements  ForecastFragment
             fragment.setArguments(bundle);
 
             getSupportFragmentManager().beginTransaction()
-                    .replace(R.id.weather_detail_container, fragment, DETAILFRAGMENT_TAG)
+                    .replace(R.id.weather_detail_container, fragment, DETAIL_FRAGMENT_TAG)
                     .commit();
         } else {
             Intent intent = new Intent(this, DetailActivity.class)

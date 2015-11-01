@@ -97,7 +97,6 @@ public class ForecastFragment extends Fragment implements LoaderManager.LoaderCa
                     Log.d(LOG_TAG, "Couldn't call " + geoLocation.toString() + ", no receiving apps installed!");
                 }
             }
-
         }
     }
 
